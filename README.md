@@ -25,11 +25,3 @@ apps/web          # 练枪前端
 apps/api          # 训练数据 API
 packages/aim-math # 灵敏度 / FOV 换算（带单测）
 ```
-
-## GitHub
-
-`.cursor/` 与 `.agent/` 仅本机使用，已写入 `.gitignore`，不会上传。
-
-## 许可
-
-私有项目，未指定开源协议。
