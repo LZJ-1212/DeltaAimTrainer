@@ -10,7 +10,7 @@ React + TypeScript + Vite + R3F + Zustand；后端阶段再加 Express + Prisma 
 
 1. Pointer Lock + 自定义视角 + 中心准星
 2. Raycaster 命中静态球
-3. 对齐三角洲 180° 手感
+3. 腰射 yaw 0.022 **且** 开镜 MDV 1.33（训练默认开镜）
 4. Flicking / Tracking
 5. 历史 Session API 与折线图
 

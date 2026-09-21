@@ -85,6 +85,28 @@ Tracking 目标不要只做匀速平移：加变速、急停、短滑铲水平�
 | MouseTester / PSA 的 yaw 与 cm/360 | 把三角洲写成 Source 引擎、或照抄 CS `cfg` |
 | 官方 df.qq.com 干员技能描述 | 未经校准的 0.07 yaw |
 
+## 开镜（优先，训练默认就是开镜）
+
+机主设定：**举枪灵敏度类型 = 仅 MDV**，系数 **1.33**，加成全 1.00，**瞄准镜镜内放大 = 关**。实战基本开镜，训练器默认用开镜 FOV + MDV 缩放后的 yaw，不要只对齐腰射 360°。
+
+MDV 1.33 = 垂直 Monitor Distance 133%，在 16:9 上约等于 MDH 75% / 4:3 边缘（[DPI Wizard](https://www.mouse-sensitivity.com/forums/topic/9030-confusion-about-mdv-and-mdh/)）。
+
+垂直 FOV 用弧度：
+
+```
+mdvScale = atan(coeff * tan(adsVFov / 2)) / atan(coeff * tan(hipVFov / 2))
+yawAds   = yawHip * mdvScale * adsMultiplier   // adsMultiplier 当前为 1
+```
+
+`coeff = 0` 时退化为焦点匹配：`tan(adsVFov/2) / tan(hipVFov/2)`。
+
+相机 `fov` 用 **开镜垂直 FOV**，不是腰射 110。1x 红点在「镜内放大关」时仍会放大（社区体感大约 70–90 水平 FOV），精确值随改枪「缩放倍率」变化，必须按倍镜做成设置并实测。
+
+## 显示
+
+- 2560×1440、区域宽高比 16:9、全屏、刷新 170、局内帧数上限 165
+- 默认 FOV 110.0，载具第三人称 100，VSync 关
+
 ## 实现默认值（机主实测配置）
 
 来自游戏内截图 + 口述：
@@ -106,4 +128,4 @@ Tracking 目标不要只做匀速平移：加变速、急停、短滑铲水平�
 - `cm/360 ≈ 360 / (1600 × 2 × 0.022) × 2.54 ≈ 13.0 cm`
 - 180° ≈ 6.5 cm
 
-MVP 用这套对齐腰射。ADS 按 MDV 1.33 后期再做。校准：同一套参数下，浏览器 180° = 游戏内 180°。
+训练默认对齐**开镜 MDV**，腰射公式只作基底。校准：开镜状态下浏览器滑到屏幕同一相对位置（例如准星到屏幕上沿附近）的垫上距离 = 游戏内开镜同样操作。

@@ -5,10 +5,12 @@
 ## 手感
 
 - Pointer Lock 读取 `movementX/Y`（已是 count，不要再乘 DPI）
-- `yaw/pitch = movement * sens * yawFactor`（三角洲 yaw 初值 **0.022**，不是 VAL 的 0.07；用游戏 180° 校准）
-- 机主默认：DPI 1600、sens 2.00、FOV 110、仅 MDV 1.33；腰射约 13 cm/360
-- 游戏水平 FOV 为 16:9 Base → Three.js 垂直 FOV：`v = 2atan(tan(h/2)/(16/9))`
-- 细节与出处见 `docs/delta-force-research.md`
+- 腰射：`deg = movement * sens * 0.022`
+- 开镜（训练默认）：MDV 系数 1.33，用垂直 FOV  
+  `scale = atan(1.33 * tan(adsVFov/2)) / atan(1.33 * tan(hipVFov/2))`  
+  `degAds = degHip * scale`
+- 机主：2560×1440 16:9、170Hz、FOV 110、DPI 1600、sens 2、仅 MDV 1.33、镜内放大关
+- 细节见 `docs/delta-force-research.md`
 
 ## 射击
 
