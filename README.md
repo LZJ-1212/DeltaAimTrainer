@@ -25,3 +25,7 @@ apps/web          # 练枪前端
 apps/api          # 训练数据 API
 packages/aim-math # 灵敏度 / FOV 换算（带单测）
 ```
+
+## License
+
+[MIT](./LICENSE)
