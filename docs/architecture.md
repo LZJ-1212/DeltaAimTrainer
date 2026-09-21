@@ -4,9 +4,10 @@
 
 ## 手感
 
-- Pointer Lock 读取 `movementX/Y`
-- `yaw/pitch = movement * sens * dpi * yawFactor`（UE yaw 初值 0.07，用游戏 180° 校准）
-- 游戏水平 FOV → Three.js 垂直 FOV：`v = 2atan(tan(h/2)/aspect)`
+- Pointer Lock 读取 `movementX/Y`（已是 count，不要再乘 DPI）
+- `yaw/pitch = movement * sens * yawFactor`（三角洲 yaw 初值 **0.022**，不是 VAL 的 0.07；用游戏 180° 校准）
+- 游戏水平 FOV 为 16:9 Base → Three.js 垂直 FOV：`v = 2atan(tan(h/2)/(16/9))`
+- 细节与出处见 `docs/delta-force-research.md`
 
 ## 射击
 
