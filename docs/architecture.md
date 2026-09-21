@@ -6,6 +6,7 @@
 
 - Pointer Lock 读取 `movementX/Y`（已是 count，不要再乘 DPI）
 - `yaw/pitch = movement * sens * yawFactor`（三角洲 yaw 初值 **0.022**，不是 VAL 的 0.07；用游戏 180° 校准）
+- 机主默认：DPI 1600、sens 2.00、FOV 110、仅 MDV 1.33；腰射约 13 cm/360
 - 游戏水平 FOV 为 16:9 Base → Three.js 垂直 FOV：`v = 2atan(tan(h/2)/(16/9))`
 - 细节与出处见 `docs/delta-force-research.md`
 
