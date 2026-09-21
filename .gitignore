@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+
+# Logs & OS
+*.log
+.DS_Store
+Thumbs.db
+
+# Local agent / editor (do not push)
+.cursor/
+.agent/
+.agents/
+.handoff/
+
+# IDE
+.vscode/
+.idea/
