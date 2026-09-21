@@ -57,6 +57,16 @@ export function TrainingRange() {
       {STATIC_TARGETS.map((target) => (
         <StaticTarget key={target.id} id={target.id} position={target.position} />
       ))}
+      <group position={[0, 1.6, 11.92]}>
+        <mesh>
+          <boxGeometry args={[0.12, 2.4, 0.04]} />
+          <meshBasicMaterial color="#deff9a" />
+        </mesh>
+        <mesh>
+          <boxGeometry args={[0.9, 0.12, 0.04]} />
+          <meshBasicMaterial color="#deff9a" />
+        </mesh>
+      </group>
     </group>
   );
 }

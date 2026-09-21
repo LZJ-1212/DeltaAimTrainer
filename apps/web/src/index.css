@@ -159,10 +159,17 @@ button {
 
 .range-hud-meta,
 .range-hud-hint,
-.range-hud-score {
+.range-hud-score,
+.range-hud-calibrate {
   margin: 0;
   color: var(--muted);
   font-size: 13px;
+}
+
+.range-hud-calibrate {
+  color: var(--lime);
+  font-family: var(--font-hud);
+  font-weight: 700;
 }
 
 .range-hud-score {

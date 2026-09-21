@@ -20,7 +20,12 @@ export function LookController({ isLocked }: LookControllerProps) {
   const look = useRef({ yawDeg: 0, pitchDeg: 0 });
   const optic = useLookSettingsStore((state) => state.optic);
   const hFovDeg = useLookSettingsStore((state) => state.hFovDeg);
+  const facingResetId = useLookSettingsStore((state) => state.facingResetId);
   const zoom = OPTIC_ZOOM[optic];
+
+  useEffect(() => {
+    look.current = { yawDeg: 0, pitchDeg: 0 };
+  }, [facingResetId]);
 
   useEffect(() => {
     if (!(camera instanceof PerspectiveCamera)) {

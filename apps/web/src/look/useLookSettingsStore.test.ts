@@ -41,4 +41,19 @@ describe("useLookSettingsStore", () => {
     ).toThrow(/fov/i);
     expect(useLookSettingsStore.getState().hFovDeg).toBe(110);
   });
+
+  it("increments facingResetId without changing look settings", () => {
+    useLookSettingsStore.getState().applySettings({
+      dpi: 800,
+      sens: 1.5,
+      hFovDeg: 90,
+      yawFactor: 0.022,
+    });
+    expect(useLookSettingsStore.getState().facingResetId).toBe(0);
+    useLookSettingsStore.getState().resetFacing();
+    const state = useLookSettingsStore.getState();
+    expect(state.facingResetId).toBe(1);
+    expect(state.dpi).toBe(800);
+    expect(state.sens).toBe(1.5);
+  });
 });

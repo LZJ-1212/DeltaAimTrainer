@@ -37,8 +37,10 @@ export function RangeHud({ isLocked }: RangeHudProps) {
     <div className="range-hud">
       <p className="range-hud-brand">DELTA AIM</p>
       <p className="range-hud-meta">
-        {dpi} DPI · sens {sens} · FOV {hFovDeg} · 腰射 {turnCm.toFixed(1)} cm/360 ·
-        开镜 180° {ads180Cm.toFixed(1)} cm
+        {dpi} DPI · sens {sens} · FOV {hFovDeg} · 腰射 {turnCm.toFixed(1)} cm/360
+      </p>
+      <p className="range-hud-calibrate">
+        开镜 180° {ads180Cm.toFixed(1)} cm · 转身对准后方青柠十字
       </p>
       <p className="range-hud-score">
         得分 {score} · 命中 {shotsHit}/{shotsFired} · 剩余 {remaining}
@@ -62,11 +64,17 @@ export function RangeHud({ isLocked }: RangeHudProps) {
         <button type="button" onClick={() => useTrainingStore.getState().reset()}>
           重置靶
         </button>
+        <button
+          type="button"
+          onClick={() => useLookSettingsStore.getState().resetFacing()}
+        >
+          重置朝向
+        </button>
       </div>
       <p className="range-hud-hint">
         {isLocked
-          ? "Esc 退出锁定 · 左键射击 · 1 红点 · 2 切 2倍"
-          : "点击画面锁定指针 · 改手感后点应用"}
+          ? "Esc 退出锁定 · 左键射击 · 1 红点 · 2 切 2倍 · 重置朝向后测 180°"
+          : "点击画面锁定指针 · 改手感后点应用 · 开镜 180° 对齐 HUD 厘米"}
       </p>
     </div>
   );
