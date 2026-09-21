@@ -7,7 +7,7 @@
 - Pointer Lock 读取 `movementX/Y`（已是 count，不要再乘 DPI）
 - 腰射：`deg = movement * sens * 0.022`
 - 开镜（训练默认红点，可切 2 倍）：MDV 1.33；精校默认
-  `hAds ≈ 2atan(tan(hHip/2)/zoom)`（红点 zoom=1，2倍 zoom=2）
+  `hAds ≈ 2atan(tan(hHip/2)/zoom)`（红点默认 zoom=1.25，2倍 zoom=2）
   `scale = atan(1.33 * tan(adsV/2)) / atan(1.33 * tan(hipV/2))`
 - 机主：2560×1440 16:9、170Hz、FOV 110、DPI 1600、sens 2、仅 MDV 1.33、镜内放大关
 - 细节见 `docs/delta-force-research.md`
