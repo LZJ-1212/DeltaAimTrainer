@@ -19,3 +19,4 @@ React + TypeScript + Vite + R3F + Zustand；后端阶段再加 Express + Prisma 
 - 灵敏度/FOV 纯函数放独立包，先测后接相机
 - 相机与准星用 ref；得分/倒计时用 Zustand
 - 禁止提交 `.cursor/`、`.agent/`、`.agents/`、`.env`
+- 规范详见 `docs/coding-standards.md`、`docs/testing.md`、`docs/roadmap.md`

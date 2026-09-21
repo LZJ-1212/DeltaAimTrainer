@@ -26,6 +26,18 @@ apps/api          # 训练数据 API
 packages/aim-math # 灵敏度 / FOV 换算（带单测）
 ```
 
+## 文档
+
+| 文件 | 内容 |
+| --- | --- |
+| [docs/architecture.md](docs/architecture.md) | 手感与模块决策 |
+| [docs/delta-force-research.md](docs/delta-force-research.md) | 游戏调研与机主配置 |
+| [docs/coding-standards.md](docs/coding-standards.md) | 代码规范 |
+| [docs/testing.md](docs/testing.md) | 测试与 TDD |
+| [docs/roadmap.md](docs/roadmap.md) | 阶段验收 |
+| [docs/data-model.md](docs/data-model.md) | Prisma 模型（后置） |
+
+
 ## License
 
 [MIT](./LICENSE)
