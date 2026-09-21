@@ -30,7 +30,9 @@
 - 深色底，强调色 `#DEFF9A`
 - 训练 HUD 在 Canvas 外的 DOM；3D 内不做复杂 HTML
 
-## Git
+## 写代码前
+
+先读 `docs/roadmap.md` 当前阶段验收，再按任务读：规范 → `coding-standards.md`；公式 → `testing.md` + `delta-force-research.md`；后端 → `data-model.md`。库 API 用 Context7，不要凭记忆。
 
 - 不提交 `.cursor/`、`.agent/`、`.agents/`、`.env`、`node_modules/`
 - 提交说明写原因，英文或中文均可，一句话即可

@@ -20,3 +20,4 @@ React + TypeScript + Vite + R3F + Zustand；后端阶段再加 Express + Prisma 
 - 相机与准星用 ref；得分/倒计时用 Zustand
 - 禁止提交 `.cursor/`、`.agent/`、`.agents/`、`.env`
 - 规范详见 `docs/coding-standards.md`、`docs/testing.md`、`docs/roadmap.md`
+- 写代码前先读当前阶段验收，再只读本次相关文档（见 `docs/coding-standards.md`「写代码前」）
