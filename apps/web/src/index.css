@@ -1,0 +1,166 @@
+:root {
+  --bg: #070a08;
+  --panel: #0e140f;
+  --ink: #c5d0c4;
+  --muted: #7d8a7a;
+  --lime: #deff9a;
+  --line: #2a3628;
+  --font-hud: "Rajdhani", "Noto Sans SC", sans-serif;
+  --font-body: "Noto Sans SC", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+button {
+  font-family: inherit;
+}
+
+.app-shell {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.stage {
+  position: relative;
+  min-height: 0;
+}
+
+.stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.crosshair {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.crosshair-arm {
+  position: absolute;
+  background: var(--lime);
+  box-shadow: 0 0 0 1px #070a08;
+}
+
+.crosshair-arm-h {
+  width: 14px;
+  height: 2px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.crosshair-arm-v {
+  width: 2px;
+  height: 14px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.crosshair-dot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--lime);
+}
+
+.lock-overlay {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(7, 10, 8, 0.28);
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 40px;
+  text-align: left;
+}
+
+.lock-overlay-kicker {
+  font-family: var(--font-hud);
+  color: var(--lime);
+  letter-spacing: 0.18em;
+  font-size: 13px;
+}
+
+.lock-overlay-title {
+  font-family: var(--font-hud);
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.lock-overlay-sub {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.range-hud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  padding: 12px 18px;
+  background: var(--panel);
+  border-top: 1px solid var(--line);
+}
+
+.range-hud-brand {
+  margin: 0;
+  font-family: var(--font-hud);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--lime);
+}
+
+.range-hud-meta,
+.range-hud-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.optic-switch {
+  display: flex;
+  gap: 8px;
+}
+
+.optic-switch button {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.optic-switch button.is-active {
+  border-color: var(--lime);
+  color: var(--lime);
+}
+
+.optic-switch button:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
+}

@@ -1,0 +1,12 @@
+{
+  "name": "delta-aim-trainer",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "test": "npm run test -w @delta-aim/aim-math",
+    "dev": "npm run dev -w @delta-aim/web"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
