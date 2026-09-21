@@ -32,7 +32,9 @@
 
 ## 写代码前
 
-先读 `docs/roadmap.md` 当前阶段验收，再按任务读：规范 → `coding-standards.md`；公式 → `testing.md` + `delta-force-research.md`；后端 → `data-model.md`。库 API 用 Context7，不要凭记忆。
+先读 `docs/roadmap.md` 当前阶段验收，再按任务读：规范用本文；公式用 `testing.md` + `delta-force-research.md`；后端用 `data-model.md`。库 API 用 Context7，不要凭记忆。
+
+## Git
 
 - 不提交 `.cursor/`、`.agent/`、`.agents/`、`.env`、`node_modules/`
 - 提交说明写原因，英文或中文均可，一句话即可
