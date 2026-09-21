@@ -1,6 +1,6 @@
 # 《三角洲行动》手感调研
 
-调研日期：2026-09-21。用于 `packages/aim-math` 与 Pointer Lock 相机，**不是**官方 SDK。实现前仍需用游戏本体做 180° 校准。
+调研日期：2026-09-21。用于 `packages/aim-math` 与 Pointer Lock 相机，**不是**官方 SDK。游戏本体 180° 对照步骤见 `docs/game-calibration.md`（**暂缓**，有条件后再测）。
 
 ## 必须改掉的假设
 

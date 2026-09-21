@@ -17,5 +17,5 @@
 
 ## 禁止
 
-- 为了过测试去改公式凑数；公式以 `docs/delta-force-research.md` 为准，偏差用校准系数单独暴露
+- 为了过测试去改公式凑数；公式以 `docs/delta-force-research.md` 为准，偏差用 `yawFactor` 单独暴露（对照步骤见 `docs/game-calibration.md`）
 - 在 `useFrame` 里写依赖 React state 的断言（测纯函数，不测帧循环）

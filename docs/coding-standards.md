@@ -32,7 +32,7 @@
 
 ## 写代码前
 
-先读 `docs/roadmap.md` 当前阶段验收，再按任务读：规范用本文；公式用 `testing.md` + `delta-force-research.md`；后端用 `data-model.md`。库 API 用 Context7，不要凭记忆。
+先读 `docs/roadmap.md` 当前阶段验收，再按任务读：规范用本文；公式用 `testing.md` + `delta-force-research.md`；对照游戏用 `game-calibration.md`；后端用 `data-model.md`。库 API 用 Context7，不要凭记忆。
 
 ## Git
 

@@ -40,6 +40,7 @@ packages/aim-math # 灵敏度 / FOV 换算（带单测）
 | --- | --- |
 | [docs/architecture.md](docs/architecture.md) | 手感与模块决策 |
 | [docs/delta-force-research.md](docs/delta-force-research.md) | 游戏调研与机主配置 |
+| [docs/game-calibration.md](docs/game-calibration.md) | 对照游戏 180°（暂缓） |
 | [docs/coding-standards.md](docs/coding-standards.md) | 代码规范 |
 | [docs/testing.md](docs/testing.md) | 测试与 TDD |
 | [docs/roadmap.md](docs/roadmap.md) | 阶段验收 |

@@ -10,7 +10,7 @@
   `hAds ≈ 2atan(tan(hHip/2)/zoom)`（红点默认 zoom=1.25，2倍 zoom=2）
   `scale = atan(1.33 * tan(adsV/2)) / atan(1.33 * tan(hipV/2))`
 - 机主：2560×1440 16:9、170Hz、FOV 110、DPI 1600、sens 2、仅 MDV 1.33、镜内放大关
-- 细节见 `docs/delta-force-research.md`
+- 细节见 `docs/delta-force-research.md`；对照游戏步骤见 `docs/game-calibration.md`（暂缓）
 
 ## 射击
 
