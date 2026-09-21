@@ -10,6 +10,8 @@ import {
   horizontalToVerticalFov,
   mdvScale,
   OPTIC_ZOOM,
+  resolveLookSettings,
+  adsCmPer180,
 } from "./lookMath";
 
 describe("degreesFromMovement", () => {
@@ -50,9 +52,87 @@ describe("horizontalToVerticalFov", () => {
     expect(horizontalToVerticalFov(110)).toBeCloseTo(77.552, 3);
   });
 
-  it("rejects FOV outside 60–120", () => {
-    expect(() => horizontalToVerticalFov(59)).toThrow(/fov/i);
-    expect(() => horizontalToVerticalFov(121)).toThrow(/fov/i);
+  it("converts ads-range horizontal FOV below hip min 60", () => {
+    expect(horizontalToVerticalFov(53.13)).toBeGreaterThan(20);
+    expect(horizontalToVerticalFov(53.13)).toBeLessThan(53.13);
+  });
+
+  it("rejects non-optical FOV", () => {
+    expect(() => horizontalToVerticalFov(0)).toThrow(/fov/i);
+    expect(() => horizontalToVerticalFov(180)).toThrow(/fov/i);
+  });
+});
+
+describe("adsLookDeltaDeg", () => {
+  it("applies MDV 1.33 on top of hip yaw for red-dot", () => {
+    const hip = degreesFromMovement({ movement: 1, sens: 2, yawFactor: 0.022 });
+    const ads = adsLookDeltaDeg({
+      movement: 1,
+      sens: 2,
+      yawFactor: 0.022,
+      hHipDeg: 110,
+      zoom: 1.25,
+      mdvCoeff: 1.33,
+    });
+    expect(ads / hip).toBeCloseTo(0.8641, 3);
+  });
+
+  it("does not throw when 2x ads FOV falls below 60", () => {
+    expect(() =>
+      adsLookDeltaDeg({
+        movement: 1,
+        sens: 2,
+        yawFactor: 0.022,
+        hHipDeg: 90,
+        zoom: 2,
+        mdvCoeff: 1.33,
+      }),
+    ).not.toThrow();
+  });
+});
+
+describe("resolveLookSettings", () => {
+  it("returns owner defaults", () => {
+    expect(
+      resolveLookSettings({ dpi: 1600, sens: 2, hFovDeg: 110, yawFactor: 0.022 }),
+    ).toEqual({ dpi: 1600, sens: 2, hFovDeg: 110, yawFactor: 0.022 });
+  });
+
+  it("rejects hip FOV outside 60–120", () => {
+    expect(() =>
+      resolveLookSettings({ dpi: 1600, sens: 2, hFovDeg: 59, yawFactor: 0.022 }),
+    ).toThrow(/fov/i);
+    expect(() =>
+      resolveLookSettings({ dpi: 1600, sens: 2, hFovDeg: 121, yawFactor: 0.022 }),
+    ).toThrow(/fov/i);
+  });
+
+  it("rejects non-positive dpi, sens, and yawFactor", () => {
+    expect(() =>
+      resolveLookSettings({ dpi: 0, sens: 2, hFovDeg: 110, yawFactor: 0.022 }),
+    ).toThrow(/dpi/i);
+    expect(() =>
+      resolveLookSettings({ dpi: 1600, sens: -1, hFovDeg: 110, yawFactor: 0.022 }),
+    ).toThrow(/sens/i);
+    expect(() =>
+      resolveLookSettings({ dpi: 1600, sens: 2, hFovDeg: 110, yawFactor: 0 }),
+    ).toThrow(/yawFactor/i);
+  });
+});
+
+describe("adsCmPer180", () => {
+  it("is hip cm/360 halved then divided by red-dot MDV scale", () => {
+    const hip = cmPer360({ dpi: 1600, sens: 2, yawFactor: 0.022 });
+    expect(
+      adsCmPer180({
+        dpi: 1600,
+        sens: 2,
+        yawFactor: 0.022,
+        hHipDeg: 110,
+        zoom: 1.25,
+        mdvCoeff: 1.33,
+      }),
+    ).toBeCloseTo(hip / 2 / 0.8641, 2);
   });
 });
 
@@ -85,21 +165,6 @@ describe("mdvScale", () => {
     expect(() =>
       mdvScale({ hipVFovDeg: 70, adsVFovDeg: 50, coeff: 0 }),
     ).toThrow(/coeff/i);
-  });
-});
-
-describe("adsLookDeltaDeg", () => {
-  it("applies MDV 1.33 on top of hip yaw for red-dot", () => {
-    const hip = degreesFromMovement({ movement: 1, sens: 2, yawFactor: 0.022 });
-    const ads = adsLookDeltaDeg({
-      movement: 1,
-      sens: 2,
-      yawFactor: 0.022,
-      hHipDeg: 110,
-      zoom: 1.25,
-      mdvCoeff: 1.33,
-    });
-    expect(ads / hip).toBeCloseTo(0.8641, 3);
   });
 });
 

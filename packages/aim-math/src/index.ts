@@ -1,12 +1,19 @@
 export {
+  adsCmPer180,
   adsHorizontalFov,
   adsLookDeltaDeg,
   applyLookDelta,
+  assertHipHorizontalFov,
   cmPer360,
+  DEFAULT_LOOK_SETTINGS,
   DEFAULT_MDV_COEFF,
   DEFAULT_YAW_FACTOR,
   degreesFromMovement,
+  HIP_FOV_MAX,
+  HIP_FOV_MIN,
   horizontalToVerticalFov,
   mdvScale,
   OPTIC_ZOOM,
+  resolveLookSettings,
 } from "./lookMath";
+export type { LookSettings } from "./lookMath";

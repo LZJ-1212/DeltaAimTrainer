@@ -1,3 +1,35 @@
+import { STATIC_TARGETS, TARGET_USER_DATA } from "../shoot/staticTargets";
+import { useTrainingStore } from "../shoot/useTrainingStore";
+
+function StaticTarget({
+  id,
+  position,
+}: {
+  id: (typeof STATIC_TARGETS)[number]["id"];
+  position: readonly [number, number, number];
+}) {
+  const isLive = useTrainingStore((state) =>
+    state.remainingTargetIds.includes(id),
+  );
+
+  return (
+    <group position={[position[0], 0, position[2]]}>
+      <mesh position={[0, 0.9, 0]}>
+        <boxGeometry args={[0.45, 1.8, 0.45]} />
+        <meshBasicMaterial color="#8aa56a" />
+      </mesh>
+      <mesh
+        position={[0, 1.95, 0]}
+        visible={isLive}
+        userData={TARGET_USER_DATA[id]}
+      >
+        <sphereGeometry args={[0.22, 16, 16]} />
+        <meshBasicMaterial color="#deff9a" />
+      </mesh>
+    </group>
+  );
+}
+
 export function TrainingRange() {
   return (
     <group>
@@ -22,14 +54,9 @@ export function TrainingRange() {
         <planeGeometry args={[24, 8]} />
         <meshBasicMaterial color="#141914" />
       </mesh>
-      <mesh position={[0, 0.9, -8]}>
-        <boxGeometry args={[0.45, 1.8, 0.45]} />
-        <meshBasicMaterial color="#8aa56a" />
-      </mesh>
-      <mesh position={[0, 1.95, -8]}>
-        <sphereGeometry args={[0.22, 16, 16]} />
-        <meshBasicMaterial color="#deff9a" />
-      </mesh>
+      {STATIC_TARGETS.map((target) => (
+        <StaticTarget key={target.id} id={target.id} position={target.position} />
+      ))}
     </group>
   );
 }

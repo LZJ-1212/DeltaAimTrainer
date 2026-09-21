@@ -3,7 +3,7 @@
   "private": true,
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
-    "test": "npm run test -w @delta-aim/aim-math",
+    "test": "npm run test -w @delta-aim/aim-math && npm run test -w @delta-aim/web",
     "dev": "npm run dev -w @delta-aim/web"
   },
   "engines": {

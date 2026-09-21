@@ -82,6 +82,28 @@ button {
   background: var(--lime);
 }
 
+.crosshair-flash {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--lime);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+  pointer-events: none;
+}
+
+.crosshair.is-hit .crosshair-flash {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.35);
+}
+
+.crosshair.is-hit .crosshair-arm,
+.crosshair.is-hit .crosshair-dot {
+  box-shadow: 0 0 8px var(--lime);
+}
+
 .lock-overlay {
   position: absolute;
   inset: 0;
@@ -136,10 +158,18 @@ button {
 }
 
 .range-hud-meta,
-.range-hud-hint {
+.range-hud-hint,
+.range-hud-score {
   margin: 0;
   color: var(--muted);
   font-size: 13px;
+}
+
+.range-hud-score {
+  color: var(--lime);
+  font-family: var(--font-hud);
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 .optic-switch {
@@ -163,4 +193,54 @@ button {
 .optic-switch button:focus-visible {
   outline: 2px solid var(--lime);
   outline-offset: 2px;
+}
+
+.look-settings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px 12px;
+}
+
+.look-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.look-field input {
+  width: 4.6rem;
+  background: #070a08;
+  border: 1px solid var(--line);
+  color: var(--lime);
+  font-family: var(--font-hud);
+  font-size: 15px;
+  font-weight: 600;
+  padding: 5px 8px;
+}
+
+.look-field input:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
+}
+
+.look-settings button {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.look-settings button:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
+}
+
+.look-settings-error {
+  margin: 0;
+  color: #ffb4a8;
+  font-size: 12px;
 }

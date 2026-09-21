@@ -30,12 +30,32 @@ export type AdsLookInput = LookDeltaInput & {
   mdvCoeff: number;
 };
 
+export type AdsCmPer180Input = CmPer360Input & {
+  hHipDeg: number;
+  zoom: number;
+  mdvCoeff: number;
+};
+
 export type ApplyLookInput = {
   yawDeg: number;
   pitchDeg: number;
   deltaYawDeg: number;
   deltaPitchDeg: number;
   pitchLimitDeg?: number;
+};
+
+export type LookSettings = {
+  dpi: number;
+  sens: number;
+  hFovDeg: number;
+  yawFactor: number;
+};
+
+export const DEFAULT_LOOK_SETTINGS: LookSettings = {
+  dpi: 1600,
+  sens: 2,
+  hFovDeg: 110,
+  yawFactor: DEFAULT_YAW_FACTOR,
 };
 
 function requirePositive(name: string, value: number): void {
@@ -76,10 +96,17 @@ export function cmPer360({ dpi, sens, yawFactor }: CmPer360Input): number {
   return (360 / (dpi * sens * yawFactor)) * 2.54;
 }
 
-export function horizontalToVerticalFov(hFovDeg: number): number {
+export function assertHipHorizontalFov(hFovDeg: number): void {
   requireFinite("fov", hFovDeg);
   if (hFovDeg < HIP_FOV_MIN || hFovDeg > HIP_FOV_MAX) {
     throw new Error(`fov must be between ${HIP_FOV_MIN} and ${HIP_FOV_MAX}`);
+  }
+}
+
+export function horizontalToVerticalFov(hFovDeg: number): number {
+  requireFinite("fov", hFovDeg);
+  if (hFovDeg <= 0 || hFovDeg >= 180) {
+    throw new Error("fov must be between 0 and 180 exclusive");
   }
   const h = degToRad(hFovDeg);
   return radToDeg(2 * Math.atan(Math.tan(h / 2) / ASPECT_16_9));
@@ -87,10 +114,7 @@ export function horizontalToVerticalFov(hFovDeg: number): number {
 
 export function adsHorizontalFov(hHipDeg: number, zoom: number): number {
   requirePositive("zoom", zoom);
-  requireFinite("fov", hHipDeg);
-  if (hHipDeg < HIP_FOV_MIN || hHipDeg > HIP_FOV_MAX) {
-    throw new Error(`fov must be between ${HIP_FOV_MIN} and ${HIP_FOV_MAX}`);
-  }
+  assertHipHorizontalFov(hHipDeg);
   const h = degToRad(hHipDeg);
   return radToDeg(2 * Math.atan(Math.tan(h / 2) / zoom));
 }
@@ -128,6 +152,26 @@ export function adsLookDeltaDeg({
   return hipDeg * scale;
 }
 
+export function adsCmPer180({
+  dpi,
+  sens,
+  yawFactor,
+  hHipDeg,
+  zoom,
+  mdvCoeff,
+}: AdsCmPer180Input): number {
+  const hipCm = cmPer360({ dpi, sens, yawFactor });
+  const hipV = horizontalToVerticalFov(hHipDeg);
+  const adsH = adsHorizontalFov(hHipDeg, zoom);
+  const adsV = horizontalToVerticalFov(adsH);
+  const scale = mdvScale({
+    hipVFovDeg: hipV,
+    adsVFovDeg: adsV,
+    coeff: mdvCoeff,
+  });
+  return hipCm / 2 / scale;
+}
+
 export function applyLookDelta({
   yawDeg,
   pitchDeg,
@@ -145,4 +189,17 @@ export function applyLookDelta({
     Math.max(-pitchLimitDeg, pitchDeg + deltaPitchDeg),
   );
   return { yawDeg: yawDeg + deltaYawDeg, pitchDeg: nextPitch };
+}
+
+export function resolveLookSettings(input: LookSettings): LookSettings {
+  requirePositive("dpi", input.dpi);
+  requirePositive("sens", input.sens);
+  requirePositive("yawFactor", input.yawFactor);
+  assertHipHorizontalFov(input.hFovDeg);
+  return {
+    dpi: input.dpi,
+    sens: input.sens,
+    hFovDeg: input.hFovDeg,
+    yawFactor: input.yawFactor,
+  };
 }

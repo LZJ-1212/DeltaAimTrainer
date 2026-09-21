@@ -4,13 +4,13 @@ import { Crosshair } from "./hud/Crosshair";
 import { LockOverlay } from "./hud/LockOverlay";
 import { RangeHud } from "./hud/RangeHud";
 import { LookController } from "./look/LookController";
-import type { OpticId } from "./look/ownerLook";
+import { useLookSettingsStore } from "./look/useLookSettingsStore";
 import { TrainingRange } from "./scene/TrainingRange";
+import { ShootingController } from "./shoot/ShootingController";
 
 export function App() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [isLocked, setIsLocked] = useState(false);
-  const [optic, setOptic] = useState<OpticId>("redDot");
 
   const enterLock = useCallback(() => {
     void stageRef.current?.requestPointerLock();
@@ -22,10 +22,10 @@ export function App() {
     };
     const onKeyDown = (event: KeyboardEvent): void => {
       if (event.key === "1") {
-        setOptic("redDot");
+        useLookSettingsStore.getState().setOptic("redDot");
       }
       if (event.key === "2") {
-        setOptic("scope2x");
+        useLookSettingsStore.getState().setOptic("scope2x");
       }
     };
     document.addEventListener("pointerlockchange", onLockChange);
@@ -47,13 +47,14 @@ export function App() {
             gl.setClearColor("#0b0f0c");
           }}
         >
-          <LookController optic={optic} isLocked={isLocked} />
+          <LookController isLocked={isLocked} />
+          <ShootingController isLocked={isLocked} />
           <TrainingRange />
         </Canvas>
         <Crosshair />
         <LockOverlay visible={!isLocked} onEnter={enterLock} />
       </div>
-      <RangeHud optic={optic} isLocked={isLocked} onOpticChange={setOptic} />
+      <RangeHud isLocked={isLocked} />
     </div>
   );
 }
