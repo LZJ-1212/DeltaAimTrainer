@@ -1,11 +1,13 @@
 :root {
-  --bg: #070a08;
-  --panel: #0e140f;
-  --ink: #c5d0c4;
-  --muted: #7d8a7a;
-  --lime: #deff9a;
-  --line: #2a3628;
-  --font-hud: "Rajdhani", "Noto Sans SC", sans-serif;
+  --bg: #17150f;
+  --panel: #221f18;
+  --ink: #ebe4d6;
+  --muted: #9a907c;
+  --ember: #e25a1c;
+  --flare: #efc07a;
+  --line: #3d382c;
+  --danger: #d45a4a;
+  --font-hud: "Tektur", "Noto Sans SC", sans-serif;
   --font-body: "Noto Sans SC", sans-serif;
 }
 
@@ -23,12 +25,18 @@ body,
   font-family: var(--font-body);
 }
 
+::selection {
+  background: var(--ember);
+  color: var(--bg);
+}
+
 button {
   font-family: inherit;
 }
 
 .app-shell {
   height: 100%;
+  min-height: 100dvh;
   display: grid;
   grid-template-rows: 1fr auto;
 }
@@ -44,6 +52,72 @@ button {
   height: 100%;
 }
 
+.stage-chrome {
+  position: absolute;
+  inset: 14px;
+  pointer-events: none;
+}
+
+.stage-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--ember);
+}
+
+.stage-corner-tl {
+  top: 0;
+  left: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.stage-corner-tr {
+  top: 0;
+  right: 0;
+  border-left: 0;
+  border-bottom: 0;
+}
+
+.stage-corner-bl {
+  bottom: 0;
+  left: 0;
+  border-right: 0;
+  border-top: 0;
+}
+
+.stage-corner-br {
+  bottom: 0;
+  right: 0;
+  border-left: 0;
+  border-top: 0;
+}
+
+.stage-readout {
+  position: absolute;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--flare);
+  font-family: var(--font-hud);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 2px #17150f;
+}
+
+.stage-readout-tl {
+  top: 10px;
+  left: 28px;
+}
+
+.stage-readout-tr {
+  top: 10px;
+  right: 28px;
+  text-align: right;
+}
+
 .crosshair {
   position: absolute;
   inset: 0;
@@ -52,8 +126,8 @@ button {
 
 .crosshair-arm {
   position: absolute;
-  background: var(--lime);
-  box-shadow: 0 0 0 1px #070a08;
+  background: var(--ink);
+  box-shadow: 0 0 0 1px #17150f;
 }
 
 .crosshair-arm-h {
@@ -79,7 +153,7 @@ button {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  background: var(--lime);
+  background: var(--ember);
 }
 
 .crosshair-flash {
@@ -88,7 +162,7 @@ button {
   top: 50%;
   width: 18px;
   height: 18px;
-  border: 2px solid var(--lime);
+  border: 2px solid var(--ember);
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.6);
   pointer-events: none;
@@ -99,155 +173,237 @@ button {
   transform: translate(-50%, -50%) scale(1.35);
 }
 
-.crosshair.is-hit .crosshair-arm,
-.crosshair.is-hit .crosshair-dot {
-  box-shadow: 0 0 8px var(--lime);
-}
-
 .lock-overlay {
   position: absolute;
   inset: 0;
   border: 0;
-  background: rgba(7, 10, 8, 0.28);
+  background: linear-gradient(
+    180deg,
+    rgb(23 21 15 / 0%) 0%,
+    rgb(23 21 15 / 10%) 55%,
+    rgb(23 21 15 / 82%) 100%
+  );
   color: var(--ink);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;
-  gap: 6px;
-  padding: 40px;
+  gap: 8px;
+  padding: 36px 40px 44px;
   text-align: left;
 }
 
-.lock-overlay-kicker {
+.lock-overlay:focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: -10px;
+}
+
+.lock-overlay-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ember);
   font-family: var(--font-hud);
-  color: var(--lime);
-  letter-spacing: 0.18em;
-  font-size: 13px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.lock-overlay-mark {
+  display: block;
 }
 
 .lock-overlay-title {
   font-family: var(--font-hud);
-  font-size: 42px;
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
   font-weight: 700;
-  line-height: 1;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
 }
 
 .lock-overlay-sub {
+  max-width: 36rem;
   color: var(--muted);
   font-size: 14px;
+  line-height: 1.45;
 }
 
 .range-hud {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 20px;
-  padding: 12px 18px;
+  display: grid;
+  grid-template-columns: minmax(16rem, 1.1fr) auto minmax(18rem, 1fr);
+  grid-template-areas:
+    "id telemetry optics"
+    "settings settings settings"
+    "hint hint hint";
+  gap: 12px 24px;
+  padding: 14px 20px 16px;
   background: var(--panel);
   border-top: 1px solid var(--line);
+}
+
+.range-hud-id {
+  grid-area: id;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.range-hud-mark {
+  flex: none;
+  color: var(--ember);
 }
 
 .range-hud-brand {
   margin: 0;
   font-family: var(--font-hud);
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--lime);
+  letter-spacing: -0.02em;
+  color: var(--ink);
 }
 
 .range-hud-meta,
-.range-hud-hint,
-.range-hud-score,
-.range-hud-calibrate {
+.range-hud-hint {
   margin: 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
-.range-hud-calibrate {
-  color: var(--lime);
-  font-family: var(--font-hud);
-  font-weight: 700;
-}
-
-.range-hud-score {
-  color: var(--lime);
-  font-family: var(--font-hud);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-.optic-switch {
+.range-hud-telemetry {
+  grid-area: telemetry;
   display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 12px 22px;
+  margin: 0;
 }
 
-.optic-switch button {
-  background: transparent;
-  color: var(--ink);
-  border: 1px solid var(--line);
-  padding: 6px 12px;
-  cursor: pointer;
+.range-hud-telemetry div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.optic-switch button.is-active {
-  border-color: var(--lime);
-  color: var(--lime);
+.range-hud-telemetry dt {
+  color: var(--muted);
+  font-size: 11px;
 }
 
-.optic-switch button:focus-visible {
-  outline: 2px solid var(--lime);
-  outline-offset: 2px;
+.range-hud-telemetry dd {
+  margin: 0;
+  color: var(--flare);
+  font-family: var(--font-hud);
+  font-size: 20px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
 }
 
 .look-settings {
+  grid-area: settings;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   gap: 8px 12px;
 }
 
+.optic-switch {
+  grid-area: optics;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.range-hud-hint {
+  grid-area: hint;
+}
+
+.optic-switch button,
+.look-settings button {
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 7px 12px;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.optic-switch button:hover,
+.look-settings button:hover {
+  border-color: var(--ember);
+}
+
+.optic-switch button:active,
+.look-settings button:active {
+  transform: translateY(1px);
+}
+
+.optic-switch button.is-active,
+.look-settings-apply {
+  background: var(--ember);
+  border-color: var(--ember);
+  color: #1a120c;
+  font-weight: 600;
+}
+
+.optic-switch button:focus-visible,
+.look-settings button:focus-visible,
+.look-field input:focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: 2px;
+}
+
 .look-field {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
   font-size: 12px;
   color: var(--muted);
 }
 
 .look-field input {
-  width: 4.6rem;
-  background: #070a08;
+  width: 4.8rem;
+  background: var(--bg);
   border: 1px solid var(--line);
-  color: var(--lime);
+  color: var(--flare);
   font-family: var(--font-hud);
   font-size: 15px;
   font-weight: 600;
-  padding: 5px 8px;
-}
-
-.look-field input:focus-visible {
-  outline: 2px solid var(--lime);
-  outline-offset: 2px;
-}
-
-.look-settings button {
-  background: transparent;
-  color: var(--ink);
-  border: 1px solid var(--line);
-  padding: 6px 12px;
-  cursor: pointer;
-}
-
-.look-settings button:focus-visible {
-  outline: 2px solid var(--lime);
-  outline-offset: 2px;
+  font-variant-numeric: tabular-nums;
+  padding: 6px 8px;
 }
 
 .look-settings-error {
   margin: 0;
-  color: #ffb4a8;
+  color: var(--danger);
   font-size: 12px;
+}
+
+@media (max-width: 960px) {
+  .range-hud {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "id"
+      "telemetry"
+      "optics"
+      "settings"
+      "hint";
+  }
+
+  .optic-switch {
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .optic-switch button,
+  .look-settings button,
+  .crosshair-flash {
+    transition: none;
+  }
 }

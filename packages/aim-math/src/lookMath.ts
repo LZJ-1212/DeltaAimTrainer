@@ -172,6 +172,12 @@ export function adsCmPer180({
   return hipCm / 2 / scale;
 }
 
+export function wrapSigned180(deg: number): number {
+  requireFinite("deg", deg);
+  const wrapped = ((((deg + 180) % 360) + 360) % 360) - 180;
+  return wrapped === -180 ? 180 : wrapped;
+}
+
 export function applyLookDelta({
   yawDeg,
   pitchDeg,
@@ -188,7 +194,7 @@ export function applyLookDelta({
     pitchLimitDeg,
     Math.max(-pitchLimitDeg, pitchDeg + deltaPitchDeg),
   );
-  return { yawDeg: yawDeg + deltaYawDeg, pitchDeg: nextPitch };
+  return { yawDeg: wrapSigned180(yawDeg + deltaYawDeg), pitchDeg: nextPitch };
 }
 
 export function resolveLookSettings(input: LookSettings): LookSettings {

@@ -3,6 +3,7 @@ import {
   adsHorizontalFov,
   adsLookDeltaDeg,
   applyLookDelta,
+  wrapSigned180,
   cmPer360,
   DEFAULT_MDV_COEFF,
   DEFAULT_YAW_FACTOR,
@@ -178,5 +179,36 @@ describe("applyLookDelta", () => {
     });
     expect(next.yawDeg).toBeCloseTo(15);
     expect(next.pitchDeg).toBe(89);
+  });
+
+  it("wraps yaw through ±180 so a full turn stays continuous", () => {
+    expect(
+      applyLookDelta({
+        yawDeg: 170,
+        pitchDeg: 0,
+        deltaYawDeg: 20,
+        deltaPitchDeg: 0,
+      }).yawDeg,
+    ).toBeCloseTo(-170);
+    expect(
+      applyLookDelta({
+        yawDeg: -170,
+        pitchDeg: 0,
+        deltaYawDeg: -20,
+        deltaPitchDeg: 0,
+      }).yawDeg,
+    ).toBeCloseTo(170);
+  });
+});
+
+describe("wrapSigned180", () => {
+  it("keeps ±90 and 180 stable and maps 181 to -179", () => {
+    expect(wrapSigned180(0)).toBe(0);
+    expect(wrapSigned180(90)).toBe(90);
+    expect(wrapSigned180(-90)).toBe(-90);
+    expect(wrapSigned180(180)).toBe(180);
+    expect(wrapSigned180(181)).toBeCloseTo(-179);
+    expect(wrapSigned180(-181)).toBeCloseTo(179);
+    expect(wrapSigned180(360)).toBe(0);
   });
 });

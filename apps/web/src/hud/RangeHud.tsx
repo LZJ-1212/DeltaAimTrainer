@@ -7,6 +7,7 @@ import {
 import { LookSettingsForm } from "../look/LookSettingsForm";
 import { useLookSettingsStore } from "../look/useLookSettingsStore";
 import { useTrainingStore } from "../shoot/useTrainingStore";
+import { DeltaMark } from "./DeltaMark";
 
 type RangeHudProps = {
   isLocked: boolean;
@@ -34,17 +35,37 @@ export function RangeHud({ isLocked }: RangeHudProps) {
   });
 
   return (
-    <div className="range-hud">
-      <p className="range-hud-brand">DELTA AIM</p>
-      <p className="range-hud-meta">
-        {dpi} DPI · sens {sens} · FOV {hFovDeg} · 腰射 {turnCm.toFixed(1)} cm/360
-      </p>
-      <p className="range-hud-calibrate">
-        开镜 180° {ads180Cm.toFixed(1)} cm · 转身对准后方青柠十字
-      </p>
-      <p className="range-hud-score">
-        得分 {score} · 命中 {shotsHit}/{shotsFired} · 剩余 {remaining}
-      </p>
+    <footer className="range-hud">
+      <div className="range-hud-id">
+        <DeltaMark className="range-hud-mark" />
+        <div>
+          <p className="range-hud-brand">三角洲靶场</p>
+          <p className="range-hud-meta">
+            {dpi} DPI · 灵敏度 {sens} · FOV {hFovDeg} · 腰射 {turnCm.toFixed(1)}{" "}
+            cm/360
+          </p>
+        </div>
+      </div>
+      <dl className="range-hud-telemetry">
+        <div>
+          <dt>得分</dt>
+          <dd>{score}</dd>
+        </div>
+        <div>
+          <dt>命中</dt>
+          <dd>
+            {shotsHit}/{shotsFired}
+          </dd>
+        </div>
+        <div>
+          <dt>剩余</dt>
+          <dd>{remaining}</dd>
+        </div>
+        <div>
+          <dt>开镜 180°</dt>
+          <dd>{ads180Cm.toFixed(1)} cm</dd>
+        </div>
+      </dl>
       <LookSettingsForm />
       <div className="optic-switch" role="group" aria-label="开镜预设">
         <button
@@ -74,9 +95,8 @@ export function RangeHud({ isLocked }: RangeHudProps) {
       <p className="range-hud-hint">
         {isLocked
           ? "Esc 退出锁定 · 左键射击 · 1 红点 · 2 切 2倍 · 重置朝向后测 180°"
-          : "点击画面锁定指针 · 改手感后点应用 · 开镜 180° 对齐 HUD 厘米"}
+          : "点击画面锁定指针 · 改手感后点应用 · 开镜 180° 对齐后方十字"}
       </p>
-    </div>
+    </footer>
   );
 }
-

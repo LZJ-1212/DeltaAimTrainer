@@ -28,7 +28,7 @@
 
 ## 训练器怎么测
 
-入口：`LookController.tsx`（Pointer Lock + yaw）。后方参照：`TrainingRange.tsx` 后墙青柠十字（`z≈11.92`，眼高）。
+入口：`LookController.tsx`（Pointer Lock + yaw）。后方参照：`TrainingRange.tsx` 后墙沙色十字（`z≈11.92`，眼高）。
 
 1. 点画面锁定指针。点 **重置朝向**（yaw/pitch 归零，面对前方靶）。
 2. 选红点或 2 倍。记下 HUD 厘米。

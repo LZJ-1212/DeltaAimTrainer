@@ -4,7 +4,7 @@
 
 ## 栈
 
-React + TypeScript + Vite + R3F + Zustand；后端阶段再加 Express + Prisma + PostgreSQL。强调色 `#DEFF9A`，深色训练房。
+React + TypeScript + Vite + R3F + Zustand；后端阶段再加 Express + Prisma + PostgreSQL。强调色 `#E25A1C`，沙色工事训练房。
 
 ## 阶段（按顺序）
 

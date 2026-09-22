@@ -1,0 +1,16 @@
+export const RANGE_PALETTE = {
+  clear: "#2a261f",
+  floor: "#3f392e",
+  gridMajor: "#6d5f48",
+  gridMinor: "#433c30",
+  wallFront: "#534c3d",
+  wallRear: "#2a261f",
+  wallSide: "#353026",
+  pants: "#5a4630",
+  shirt: "#7a6244",
+  vest: "#3a342c",
+  skin: "#c4a07a",
+  helmet: "#2a2620",
+  target: "#f08a32",
+  calibrate: "#f3d39a",
+} as const;

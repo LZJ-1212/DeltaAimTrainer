@@ -67,7 +67,9 @@ export function LookSettingsForm() {
           onChange={(event) => setDraft({ ...draft, yawFactor: event.target.value })}
         />
       </label>
-      <button type="submit">应用手感</button>
+      <button className="look-settings-apply" type="submit">
+        应用手感
+      </button>
       {error ? (
         <p className="look-settings-error" role="alert">
           {error}

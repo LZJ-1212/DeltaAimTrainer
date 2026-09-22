@@ -3,17 +3,34 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Crosshair } from "./hud/Crosshair";
 import { LockOverlay } from "./hud/LockOverlay";
 import { RangeHud } from "./hud/RangeHud";
+import { StageChrome } from "./hud/StageChrome";
 import { LookController } from "./look/LookController";
 import { useLookSettingsStore } from "./look/useLookSettingsStore";
+import { RANGE_PALETTE } from "./scene/rangePalette";
 import { TrainingRange } from "./scene/TrainingRange";
 import { ShootingController } from "./shoot/ShootingController";
+
+const CANVAS_CAMERA = {
+  fov: 65.455,
+  near: 0.1,
+  far: 80,
+  position: [0, 1.6, 0] as const,
+};
 
 export function App() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [isLocked, setIsLocked] = useState(false);
 
   const enterLock = useCallback(() => {
-    void stageRef.current?.requestPointerLock();
+    const stage = stageRef.current;
+    if (!stage) {
+      return;
+    }
+    try {
+      void stage.requestPointerLock({ unadjustedMovement: true });
+    } catch {
+      void stage.requestPointerLock();
+    }
   }, []);
 
   useEffect(() => {
@@ -42,15 +59,16 @@ export function App() {
         <Canvas
           dpr={1}
           gl={{ antialias: false, powerPreference: "high-performance", alpha: false }}
-          camera={{ fov: 65.455, near: 0.1, far: 80, position: [0, 1.6, 0] }}
+          camera={CANVAS_CAMERA}
           onCreated={({ gl }) => {
-            gl.setClearColor("#0b0f0c");
+            gl.setClearColor(RANGE_PALETTE.clear);
           }}
         >
           <LookController isLocked={isLocked} />
           <ShootingController isLocked={isLocked} />
           <TrainingRange />
         </Canvas>
+        <StageChrome />
         <Crosshair />
         <LockOverlay visible={!isLocked} onEnter={enterLock} />
       </div>

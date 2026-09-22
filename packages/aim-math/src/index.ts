@@ -15,5 +15,6 @@ export {
   mdvScale,
   OPTIC_ZOOM,
   resolveLookSettings,
+  wrapSigned180,
 } from "./lookMath";
 export type { LookSettings } from "./lookMath";
