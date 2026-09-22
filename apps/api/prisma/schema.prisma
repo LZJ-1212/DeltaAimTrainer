@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  dpi       Int       @default(1600)
+  sens      Float     @default(2)
+  hFovDeg   Float     @default(110)
+  sessions  Session[]
+}
+
+model Session {
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  mode           String
+  optic          String
+  score          Int
+  shotsFired     Int
+  shotsHit       Int
+  accuracy       Float
+  avgReactionMs  Int?
+  trackingUptime Float?
+
+  @@index([userId, createdAt])
+}

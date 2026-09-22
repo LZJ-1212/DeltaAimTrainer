@@ -1,12 +1,19 @@
 {
   "name": "delta-aim-trainer",
   "private": true,
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "test": "npm run test -w @delta-aim/aim-math && npm run test -w @delta-aim/web",
-    "dev": "npm run dev -w @delta-aim/web"
+    "test": "npm run test -w @delta-aim/aim-math && npm run test -w @delta-aim/web && npm run test -w @delta-aim/api",
+    "dev": "concurrently -k -n db,api,web -c blue,magenta,cyan \"npm run db:up -w @delta-aim/api\" \"npm run dev -w @delta-aim/api\" \"npm run dev -w @delta-aim/web\"",
+    "db:up": "npm run db:up -w @delta-aim/api"
   },
   "engines": {
     "node": ">=20"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
   }
 }

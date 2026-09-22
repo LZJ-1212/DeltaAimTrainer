@@ -465,6 +465,53 @@ button {
   font-size: 12px;
 }
 
+.history-panel {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  z-index: 3;
+  width: min(24rem, calc(100% - 56px));
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px 12px;
+  background: rgb(23 21 15 / 92%);
+  border: 1px solid var(--ember);
+  color: var(--ink);
+  pointer-events: auto;
+}
+
+.history-panel h2 {
+  margin: 0;
+  font-family: var(--font-hud);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.history-kicker,
+.history-panel p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.history-kicker {
+  color: var(--ember);
+  font-family: var(--font-hud);
+  font-weight: 600;
+}
+
+.history-error {
+  color: var(--danger);
+}
+
+.history-chart {
+  height: 148px;
+}
+
 @media (max-width: 960px) {
   .range-hud {
     grid-template-columns: 1fr;

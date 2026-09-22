@@ -6,6 +6,8 @@ dist/
 build/
 coverage/
 *.tsbuildinfo
+apps/api/generated/
+apps/api/.pgdata/
 
 # Env & secrets
 .env

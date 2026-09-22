@@ -1,5 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { HistoryPanel } from "./history/HistoryPanel";
+import { usePersistSettledRound } from "./history/usePersistSettledRound";
 import { Crosshair } from "./hud/Crosshair";
 import { LockOverlay } from "./hud/LockOverlay";
 import { RangeHud } from "./hud/RangeHud";
@@ -23,7 +25,12 @@ const CANVAS_CAMERA = {
 export function App() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [isLocked, setIsLocked] = useState(false);
+  const [historyRevision, setHistoryRevision] = useState(0);
   const phase = useTrainingStore((state) => state.phase);
+  const reloadHistory = useCallback(() => {
+    setHistoryRevision((revision) => revision + 1);
+  }, []);
+  const saveError = usePersistSettledRound(reloadHistory);
 
   const enterLock = useCallback(() => {
     const stage = stageRef.current;
@@ -99,6 +106,9 @@ export function App() {
             enterLock();
           }}
         />
+        {isLocked ? null : (
+          <HistoryPanel revision={historyRevision} saveError={saveError} />
+        )}
         <LockOverlay visible={!isLocked && phase !== "settled"} onEnter={enterLock} />
       </div>
       <RangeHud isLocked={isLocked} />
