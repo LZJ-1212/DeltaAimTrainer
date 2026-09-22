@@ -3,12 +3,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Crosshair } from "./hud/Crosshair";
 import { LockOverlay } from "./hud/LockOverlay";
 import { RangeHud } from "./hud/RangeHud";
+import { RoundClock } from "./hud/RoundClock";
+import { RoundReport } from "./hud/RoundReport";
 import { StageChrome } from "./hud/StageChrome";
 import { LookController } from "./look/LookController";
 import { useLookSettingsStore } from "./look/useLookSettingsStore";
 import { RANGE_PALETTE } from "./scene/rangePalette";
 import { TrainingRange } from "./scene/TrainingRange";
 import { ShootingController } from "./shoot/ShootingController";
+import { useTrainingStore } from "./shoot/useTrainingStore";
 
 const CANVAS_CAMERA = {
   fov: 65.455,
@@ -20,6 +23,7 @@ const CANVAS_CAMERA = {
 export function App() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [isLocked, setIsLocked] = useState(false);
+  const phase = useTrainingStore((state) => state.phase);
 
   const enterLock = useCallback(() => {
     const stage = stageRef.current;
@@ -35,14 +39,31 @@ export function App() {
 
   useEffect(() => {
     const onLockChange = (): void => {
-      setIsLocked(document.pointerLockElement === stageRef.current);
+      const locked = document.pointerLockElement === stageRef.current;
+      setIsLocked(locked);
+      if (!locked) {
+        return;
+      }
+      const training = useTrainingStore.getState();
+      if (training.phase === "idle") {
+        training.start(training.mode);
+      }
     };
     const onKeyDown = (event: KeyboardEvent): void => {
+      if (event.target instanceof HTMLInputElement) {
+        return;
+      }
       if (event.key === "1") {
         useLookSettingsStore.getState().setOptic("redDot");
       }
       if (event.key === "2") {
         useLookSettingsStore.getState().setOptic("scope2x");
+      }
+      if (event.key === "r" || event.key === "R") {
+        const training = useTrainingStore.getState();
+        if (training.phase === "settled") {
+          training.start(training.mode);
+        }
       }
     };
     document.addEventListener("pointerlockchange", onLockChange);
@@ -66,11 +87,19 @@ export function App() {
         >
           <LookController isLocked={isLocked} />
           <ShootingController isLocked={isLocked} />
-          <TrainingRange />
+          <TrainingRange isLocked={isLocked} />
         </Canvas>
+        <RoundClock isLocked={isLocked} />
         <StageChrome />
         <Crosshair />
-        <LockOverlay visible={!isLocked} onEnter={enterLock} />
+        <RoundReport
+          onRestart={() => {
+            const training = useTrainingStore.getState();
+            training.start(training.mode);
+            enterLock();
+          }}
+        />
+        <LockOverlay visible={!isLocked && phase !== "settled"} onEnter={enterLock} />
       </div>
       <RangeHud isLocked={isLocked} />
     </div>

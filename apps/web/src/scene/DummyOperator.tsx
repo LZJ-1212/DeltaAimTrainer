@@ -1,8 +1,7 @@
-import { TARGET_USER_DATA } from "../shoot/staticTargets";
 import { RANGE_PALETTE } from "./rangePalette";
 
 type DummyOperatorProps = {
-  targetId: keyof typeof TARGET_USER_DATA;
+  targetId: string;
   isLive: boolean;
 };
 
@@ -13,7 +12,7 @@ function HitMesh({
   color,
   rotation,
 }: {
-  targetId: keyof typeof TARGET_USER_DATA;
+  targetId: string;
   position: readonly [number, number, number];
   args: readonly [number, number, number];
   color: string;
@@ -23,7 +22,7 @@ function HitMesh({
     <mesh
       position={position}
       rotation={rotation}
-      userData={TARGET_USER_DATA[targetId]}
+      userData={{ targetId }}
     >
       <boxGeometry args={args} />
       <meshBasicMaterial color={color} />

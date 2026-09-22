@@ -6,8 +6,15 @@ import {
 } from "@delta-aim/aim-math";
 import { LookSettingsForm } from "../look/LookSettingsForm";
 import { useLookSettingsStore } from "../look/useLookSettingsStore";
+import {
+  averageTtkMs,
+  displaySeconds,
+  firstShotRate,
+  trackingUptime,
+} from "../shoot/drillRound";
 import { useTrainingStore } from "../shoot/useTrainingStore";
 import { DeltaMark } from "./DeltaMark";
+import { formatMilliseconds, formatRate } from "./formatDrill";
 
 type RangeHudProps = {
   isLocked: boolean;
@@ -17,7 +24,16 @@ export function RangeHud({ isLocked }: RangeHudProps) {
   const score = useTrainingStore((state) => state.score);
   const shotsHit = useTrainingStore((state) => state.shotsHit);
   const shotsFired = useTrainingStore((state) => state.shotsFired);
-  const remaining = useTrainingStore((state) => state.remainingTargetIds.length);
+  const mode = useTrainingStore((state) => state.mode);
+  const phase = useTrainingStore((state) => state.phase);
+  const elapsedMs = useTrainingStore((state) => state.elapsedMs);
+  const firstShotHits = useTrainingStore((state) => state.firstShotHits);
+  const firstShotAttempts = useTrainingStore((state) => state.firstShotAttempts);
+  const ttkSumMs = useTrainingStore((state) => state.ttkSumMs);
+  const ttkSamples = useTrainingStore((state) => state.ttkSamples);
+  const trackedMs = useTrainingStore((state) => state.trackedMs);
+  const trackingWindowMs = useTrainingStore((state) => state.trackingWindowMs);
+  const startRound = useTrainingStore((state) => state.start);
   const optic = useLookSettingsStore((state) => state.optic);
   const dpi = useLookSettingsStore((state) => state.dpi);
   const sens = useLookSettingsStore((state) => state.sens);
@@ -59,8 +75,25 @@ export function RangeHud({ isLocked }: RangeHudProps) {
         </div>
         <div>
           <dt>剩余</dt>
-          <dd>{remaining}</dd>
+          <dd>{displaySeconds({ phase, elapsedMs })}s</dd>
         </div>
+        {mode === "flicking" ? (
+          <>
+            <div>
+              <dt>首发</dt>
+              <dd>{formatRate(firstShotRate({ firstShotHits, firstShotAttempts }))}</dd>
+            </div>
+            <div>
+              <dt>TTK</dt>
+              <dd>{formatMilliseconds(averageTtkMs({ ttkSumMs, ttkSamples }))}</dd>
+            </div>
+          </>
+        ) : (
+          <div>
+            <dt>Uptime</dt>
+            <dd>{formatRate(trackingUptime({ trackedMs, trackingWindowMs }))}</dd>
+          </div>
+        )}
         <div>
           <dt>开镜 180°</dt>
           <dd>{ads180Cm.toFixed(1)} cm</dd>
@@ -82,8 +115,22 @@ export function RangeHud({ isLocked }: RangeHudProps) {
         >
           2倍 {OPTIC_ZOOM.scope2x}x
         </button>
-        <button type="button" onClick={() => useTrainingStore.getState().reset()}>
-          重置靶
+        <button
+          type="button"
+          className={mode === "flicking" ? "is-active" : undefined}
+          onClick={() => startRound("flicking")}
+        >
+          甩枪
+        </button>
+        <button
+          type="button"
+          className={mode === "tracking" ? "is-active" : undefined}
+          onClick={() => startRound("tracking")}
+        >
+          跟枪
+        </button>
+        <button type="button" onClick={() => startRound(mode)}>
+          再来一局
         </button>
         <button
           type="button"
@@ -94,8 +141,10 @@ export function RangeHud({ isLocked }: RangeHudProps) {
       </div>
       <p className="range-hud-hint">
         {isLocked
-          ? "Esc 退出锁定 · 左键射击 · 1 红点 · 2 切 2倍 · 重置朝向后测 180°"
-          : "点击画面锁定指针 · 改手感后点应用 · 开镜 180° 对齐后方十字"}
+          ? mode === "tracking"
+            ? "Esc 退出锁定 · 按住左键且准星在人身上才涨分 · 1 红点 · 2 切 2倍 · 结算后按 R 再来一局"
+            : "Esc 退出锁定 · 左键射击 · 1 红点 · 2 切 2倍 · 结算后按 R 再来一局"
+          : "点击画面开始 60 秒。甩枪看首发和 TTK，跟枪按住左键看 Uptime。"}
       </p>
     </footer>
   );

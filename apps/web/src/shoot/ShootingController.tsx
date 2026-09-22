@@ -1,17 +1,17 @@
 import { useThree } from "@react-three/fiber";
 import { useEffect } from "react";
 import { Object3D, Raycaster, Vector2 } from "three";
+import { FLICK_TARGET_ID, TRACK_TARGET_ID } from "./drillRound";
 import { resolveShot } from "./resolveShot";
 import { useTrainingStore } from "./useTrainingStore";
 
 const CENTER_NDC = new Vector2(0, 0);
 const raycaster = new Raycaster();
 
-function collectLiveTargets(root: Object3D, remaining: ReadonlySet<string>): Object3D[] {
+function collectDrillMeshes(root: Object3D, targetId: string): Object3D[] {
   const targets: Object3D[] = [];
   root.traverse((object) => {
-    const targetId = object.userData.targetId;
-    if (typeof targetId === "string" && remaining.has(targetId)) {
+    if (object.userData.targetId === targetId) {
       targets.push(object);
     }
   });
@@ -36,8 +36,12 @@ export function ShootingController({ isLocked }: ShootingControllerProps) {
         return;
       }
 
-      const remaining = new Set(useTrainingStore.getState().remainingTargetIds);
-      const liveTargets = collectLiveTargets(scene, remaining);
+      const training = useTrainingStore.getState();
+      if (training.phase !== "running") {
+        return;
+      }
+      const targetId = training.mode === "flicking" ? FLICK_TARGET_ID : TRACK_TARGET_ID;
+      const liveTargets = collectDrillMeshes(scene, targetId);
       raycaster.setFromCamera(CENTER_NDC, camera);
       const hits = raycaster.intersectObjects(liveTargets, false);
       const candidates = hits.map((hit) => ({

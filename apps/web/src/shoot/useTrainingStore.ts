@@ -1,32 +1,33 @@
 import { create } from "zustand";
-import { applyShot, createInitialTraining, type TrainingSnapshot } from "./applyShot";
+import {
+  advanceRound,
+  applyDrillShot,
+  createIdleRound,
+  startRound,
+  type DrillMode,
+  type DrillRound,
+  type TrackingSample,
+} from "./drillRound";
 import type { ShotResult } from "./resolveShot";
-import { STATIC_TARGET_IDS } from "./staticTargets";
 
-type TrainingStore = TrainingSnapshot & {
+type TrainingStore = DrillRound & {
+  roundSerial: number;
+  start: (mode: DrillMode) => void;
+  tick: (deltaMs: number, sample?: TrackingSample) => void;
   fire: (result: ShotResult) => void;
-  reset: () => void;
   clearLastShot: () => void;
 };
 
-const initialTraining = (): TrainingSnapshot =>
-  createInitialTraining(STATIC_TARGET_IDS);
-
 export const useTrainingStore = create<TrainingStore>()((set) => ({
-  ...initialTraining(),
-  fire: (result) =>
-    set((state) =>
-      applyShot(
-        {
-          score: state.score,
-          shotsFired: state.shotsFired,
-          shotsHit: state.shotsHit,
-          remainingTargetIds: state.remainingTargetIds,
-          lastShot: state.lastShot,
-        },
-        result,
-      ),
-    ),
-  reset: () => set(initialTraining()),
+  ...createIdleRound("flicking"),
+  roundSerial: 0,
+  start: (mode) =>
+    set((state) => ({
+      ...startRound(mode),
+      roundSerial: state.roundSerial + 1,
+    })),
+  tick: (deltaMs, sample) =>
+    set((state) => advanceRound(state, deltaMs, sample)),
+  fire: (result) => set((state) => applyDrillShot(state, result)),
   clearLastShot: () => set({ lastShot: null }),
 }));

@@ -18,7 +18,7 @@ export function LockOverlay({ visible, onEnter }: LockOverlayProps) {
       </span>
       <span className="lock-overlay-title">进入瞄准</span>
       <span className="lock-overlay-sub">
-        锁定指针后按开镜手感训练。下方改 DPI、灵敏度、FOV。
+        锁定后开始 60 秒。默认甩枪，下方可切跟枪。
       </span>
     </button>
   );

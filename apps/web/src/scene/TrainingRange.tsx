@@ -1,27 +1,11 @@
-import { STATIC_TARGETS } from "../shoot/staticTargets";
-import { useTrainingStore } from "../shoot/useTrainingStore";
-import { DummyOperator } from "./DummyOperator";
+import { DrillTargets } from "./DrillTargets";
 import { RANGE_PALETTE } from "./rangePalette";
 
-function StaticTarget({
-  id,
-  position,
-}: {
-  id: (typeof STATIC_TARGETS)[number]["id"];
-  position: readonly [number, number, number];
-}) {
-  const isLive = useTrainingStore((state) =>
-    state.remainingTargetIds.includes(id),
-  );
+type TrainingRangeProps = {
+  isLocked: boolean;
+};
 
-  return (
-    <group position={[position[0], 0, position[2]]}>
-      <DummyOperator targetId={id} isLive={isLive} />
-    </group>
-  );
-}
-
-export function TrainingRange() {
+export function TrainingRange({ isLocked }: TrainingRangeProps) {
   return (
     <group>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
@@ -48,9 +32,7 @@ export function TrainingRange() {
         <boxGeometry args={[0.4, 8, 24.8]} />
         <meshBasicMaterial color={RANGE_PALETTE.wallSide} />
       </mesh>
-      {STATIC_TARGETS.map((target) => (
-        <StaticTarget key={target.id} id={target.id} position={target.position} />
-      ))}
+      <DrillTargets isLocked={isLocked} />
       <group position={[0, 1.6, 11.92]}>
         <mesh>
           <boxGeometry args={[0.12, 2.4, 0.04]} />

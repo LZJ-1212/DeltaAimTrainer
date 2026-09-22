@@ -228,6 +228,87 @@ button {
   line-height: 1.45;
 }
 
+.round-report {
+  position: absolute;
+  left: 28px;
+  bottom: 28px;
+  z-index: 2;
+  width: min(22rem, calc(100% - 56px));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px 14px;
+  background: rgb(23 21 15 / 88%);
+  border: 1px solid var(--ember);
+  color: var(--ink);
+  pointer-events: auto;
+}
+
+.round-report h2 {
+  margin: 0;
+  font-family: var(--font-hud);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+.round-report-kicker,
+.round-report p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.round-report-kicker {
+  color: var(--ember);
+  font-family: var(--font-hud);
+  font-weight: 600;
+}
+
+.round-report dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px 12px;
+  margin: 0;
+}
+
+.round-report dl div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.round-report dt {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.round-report dd {
+  margin: 0;
+  color: var(--flare);
+  font-family: var(--font-hud);
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.round-report button {
+  align-self: flex-start;
+  background: var(--ember);
+  border: 1px solid var(--ember);
+  color: #1a120c;
+  font-weight: 600;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.round-report button:focus-visible {
+  outline: 2px solid var(--flare);
+  outline-offset: 2px;
+}
+
 .range-hud {
   display: grid;
   grid-template-columns: minmax(16rem, 1.1fr) auto minmax(18rem, 1fr);

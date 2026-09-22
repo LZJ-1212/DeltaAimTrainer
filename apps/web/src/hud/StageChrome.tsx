@@ -1,5 +1,6 @@
 import { adsCmPer180, DEFAULT_MDV_COEFF, OPTIC_ZOOM } from "@delta-aim/aim-math";
 import { useLookSettingsStore } from "../look/useLookSettingsStore";
+import { displaySeconds } from "../shoot/drillRound";
 import { useTrainingStore } from "../shoot/useTrainingStore";
 
 const OPTIC_LABEL = {
@@ -14,6 +15,8 @@ export function StageChrome() {
   const hFovDeg = useLookSettingsStore((state) => state.hFovDeg);
   const yawFactor = useLookSettingsStore((state) => state.yawFactor);
   const score = useTrainingStore((state) => state.score);
+  const phase = useTrainingStore((state) => state.phase);
+  const elapsedMs = useTrainingStore((state) => state.elapsedMs);
   const ads180Cm = adsCmPer180({
     dpi,
     sens,
@@ -31,6 +34,7 @@ export function StageChrome() {
       <span className="stage-corner stage-corner-br" />
       <p className="stage-readout stage-readout-tl">
         {OPTIC_LABEL[optic]} {OPTIC_ZOOM[optic]}x
+        <span>剩余 {displaySeconds({ phase, elapsedMs })}s</span>
         <span>得分 {score}</span>
       </p>
       <p className="stage-readout stage-readout-tr">
